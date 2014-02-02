@@ -47,7 +47,7 @@ module Plutus
     #
     # @return [Plutus::Transaction] A Transaction with built credit and debit objects ready for saving
     def self.build(hash)
-      transaction = Transaction.new(:description => hash[:description], :commercial_document => hash[:commercial_document])
+      transaction = Transaction.new(hash.slice! :debits, :credits)
       hash[:debits].each do |debit|
         a = Account.find_by_name(debit[:account])
         transaction.debit_amounts << DebitAmount.new(:account => a, :amount => debit[:amount], :transaction => transaction)
